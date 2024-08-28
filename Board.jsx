@@ -87,3 +87,4 @@ const Board = ({ player1Id, player2Id }) => {
 };
 
 export default Board;
+
