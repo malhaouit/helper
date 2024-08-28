@@ -8,14 +8,9 @@ through various API endpoints.
 from flask import Blueprint, request, jsonify
 from database import get_db
 import uuid
-import logging
 
 # Initialize the game_routes blueprint
 bp = Blueprint('game_routes', __name__)
-
-# Setup logging
-logging.basicConfig(level=logging.INFO)
-
 
 def generate_uuid():
     """
@@ -23,35 +18,32 @@ def generate_uuid():
     """
     return str(uuid.uuid4())
 
-
 @bp.route('/games', methods=['POST'], strict_slashes=False)
 def create_game():
     """
     Creates a new game and inserts it into the database.
     """
     data = request.json
+    first_player_id = data.get("first_player_id")
+    second_player_id = data.get("second_player_id")
 
-    if not data.get("first_player"):
-        return jsonify({"error": "First player ID is required"}), 400
+    # Logging the incoming data
+    print("Received game creation request with data:", data)
 
-    if not isinstance(data.get("first_player"), str):
-        return jsonify({"error": "First player ID must be a string"}), 400
-
-    if not data.get("second_player"):
-        return jsonify({"error": "Second player ID is required"}), 400
-
-    if not isinstance(data.get("second_player"), str):
-        return jsonify({"error": "Second player ID must be a string"}), 400
+    # Validate the player IDs
+    if not first_player_id or not second_player_id:
+        print("Error: Missing player IDs")
+        return jsonify({"error": "Player IDs are required"}), 400
 
     # Create game document with default values
     game = {
         "id": generate_uuid(),
-        "first_player": data["first_player"],
-        "second_player": data["second_player"],
+        "first_player_id": first_player_id,
+        "second_player_id": second_player_id,
         "decision": 0,  # Default to draw
         "difficulty": 1,  # Default to easy
-        "board": [''] * 9,  # Initialize an empty board
-        "completed": False  # Mark game as not completed
+        "board": [""] * 9,  # Empty board
+        "completed": False
     }
 
     # Insert the new game into the 'games' collection
@@ -59,54 +51,8 @@ def create_game():
     result = games_collection.insert_one(game)
     game["_id"] = str(result.inserted_id)
 
-    logging.info(f"Game {game['id']} created with players {game['first_player']} and {game['second_player']}")
-
     # Return the newly created game data as JSON
     return jsonify(game), 201
-
-
-@bp.route('/games/<id>/result', methods=['PUT'], strict_slashes=False)
-def update_game_result(id):
-    """
-    Updates the result of a game by setting the decision value.
-    """
-    data = request.json
-
-    if not data.get("decision"):
-        return jsonify({"error": "Decision value is required"}), 400
-
-    if not isinstance(data["decision"], int):
-        return jsonify({"error": "Decision value must be an integer"}), 400
-
-    # Update the game result in the database
-    result = get_db()['games'].update_one(
-        {"id": id}, {"$set": {"decision": data["decision"], "completed": True}})
-
-    if result.matched_count > 0:
-        logging.info(f"Game {id} result updated to {data['decision']}")
-        return jsonify({"message": "Game result updated"}), 200
-
-    # If the game is not found, return a 404 error
-    return jsonify({"error": "Game not found"}), 404
-
-
-@bp.route('/games/<id>', methods=['GET'])
-def get_game(id):
-    """
-    Retrieves a game's details by its unique ID.
-    """
-    # Fetch the game document from the database
-    game = get_db()['games'].find_one({"id": id})
-
-    if game:
-        # Convert ObjectId to a string for JSON serialization
-        if '_id' in game:
-            game['_id'] = str(game['_id'])
-        return jsonify(game), 200
-
-    # If the game is not found, return a 404 error
-    return jsonify({"error": "Game not found"}), 404
-
 
 @bp.route('/games/<id>/move', methods=['PUT'], strict_slashes=False)
 def make_move(id):
@@ -126,10 +72,6 @@ def make_move(id):
     if not game:
         return jsonify({"error": "Game not found."}), 404
 
-    # Prevent moves after the game is completed
-    if game.get('completed'):
-        return jsonify({"error": "The game is already over."}), 400
-
     # Update the board
     board = game.get('board', [''] * 9)
     if board[index] != '':
@@ -141,12 +83,35 @@ def make_move(id):
     # Check for winner
     winner = check_winner(board)
     if winner:
-        get_db()['games'].update_one({"id": id}, {"$set": {"decision": winner, "completed": True}})
-        logging.info(f"Game {id} won by {winner}")
+        # Update game completion status
+        get_db()['games'].update_one({"id": id}, {"$set": {"completed": True, "decision": winner}})
+
+        # Update player stats based on the winner
+        update_player_stats_after_game(game, winner)
+
         return jsonify({"winner": winner, "board": board}), 200
 
     return jsonify({"board": board}), 200
 
+def update_player_stats_after_game(game, winner):
+    """
+    Updates the stats of the players involved in a game based on the outcome.
+    """
+    first_player_id = game.get("first_player_id")
+    second_player_id = game.get("second_player_id")
+
+    if winner == 'X':
+        # First player wins, second player loses
+        get_db()['players'].update_one({"id": first_player_id}, {"$inc": {"wins": 1}})
+        get_db()['players'].update_one({"id": second_player_id}, {"$inc": {"losses": 1}})
+    elif winner == 'O':
+        # Second player wins, first player loses
+        get_db()['players'].update_one({"id": second_player_id}, {"$inc": {"wins": 1}})
+        get_db()['players'].update_one({"id": first_player_id}, {"$inc": {"losses": 1}})
+    else:
+        # It's a draw
+        get_db()['players'].update_one({"id": first_player_id}, {"$inc": {"draws": 1}})
+        get_db()['players'].update_one({"id": second_player_id}, {"$inc": {"draws": 1}})
 
 def check_winner(board):
     """
