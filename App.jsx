@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Board from './components/Board';
-import PlayersPanel from './components/PlayersPanel';
 import axios from 'axios';
 
 const App = () => {
@@ -47,10 +46,16 @@ const App = () => {
           <button onClick={handleStartGame}>Start Game</button>
         </div>
       ) : (
-        <Board player1Id={player1Id} player2Id={player2Id} />
+        <Board 
+          player1Id={player1Id} 
+          player2Id={player2Id} 
+          player1Name={player1Name} 
+          player2Name={player2Name} 
+        />
       )}
     </div>
   );
 };
 
 export default App;
+

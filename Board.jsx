@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Cell from './Cell';
 import PlayersPanel from './PlayersPanel';
 import '../App.css';
 
-const Board = ({ player1Id, player2Id }) => {
+const Board = ({ player1Id, player2Id, player1Name, player2Name }) => {
   const [gameId, setGameId] = useState(null);
   const [cells, setCells] = useState(Array(9).fill(''));
   const [currentPlayer, setCurrentPlayer] = useState('X');
   const [gameOver, setGameOver] = useState(false);
+  const gameCreated = useRef(false); // Use a ref to track if the game has been created
 
   useEffect(() => {
-    console.log("Player 1 ID:", player1Id);
-    console.log("Player 2 ID:", player2Id);
-
-    if (player1Id && player2Id) {
-      // Create a new game when the component mounts with real player IDs
+    if (!gameCreated.current && player1Id && player2Id) {
+      console.log("Creating a new game...");
+      // Create a new game only once
       axios.post('http://localhost:5000/games', {
         first_player_id: player1Id,
         second_player_id: player2Id
@@ -24,14 +23,12 @@ const Board = ({ player1Id, player2Id }) => {
         console.log("Game created successfully:", response.data);
         setGameId(response.data.id);
         setCells(response.data.board);
+        gameCreated.current = true; // Mark the game as created
       })
       .catch(error => {
         console.error('Error creating game:', error);
         alert("Error creating game. Please check the backend logs.");
       });
-    } else {
-      console.error('Player IDs are invalid:', player1Id, player2Id);
-      alert("Player IDs are invalid. Please check the console for more details.");
     }
   }, [player1Id, player2Id]);
 
@@ -69,7 +66,7 @@ const Board = ({ player1Id, player2Id }) => {
 
   return (
     <div className="app">
-      <PlayersPanel player1="Player 1" player2="Player 2" />
+      <PlayersPanel player1={player1Name} player2={player2Name} />
       <div className="board">
         {cells.map((cell, index) => (
           <Cell
