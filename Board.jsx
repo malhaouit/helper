@@ -9,7 +9,7 @@ const Board = ({ player1Id, player2Id, player1Name, player2Name }) => {
   const [cells, setCells] = useState(Array(9).fill(''));
   const [currentPlayer, setCurrentPlayer] = useState('X');
   const [gameOver, setGameOver] = useState(false);
-  const gameCreated = useRef(false); // Use a ref to track if the game has been created
+  const gameCreated = useRef(false); // Track whether the game has been created
 
   useEffect(() => {
     if (!gameCreated.current && player1Id && player2Id) {
