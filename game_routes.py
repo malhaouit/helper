@@ -18,6 +18,7 @@ def generate_uuid():
     """
     return str(uuid.uuid4())
 
+
 @bp.route('/games', methods=['POST'], strict_slashes=False)
 def create_game():
     """
@@ -52,7 +53,9 @@ def create_game():
     game["_id"] = str(result.inserted_id)
 
     # Return the newly created game data as JSON
+    print("Game created successfully with ID:", game["id"])
     return jsonify(game), 201
+
 
 @bp.route('/games/<id>/move', methods=['PUT'], strict_slashes=False)
 def make_move(id):
