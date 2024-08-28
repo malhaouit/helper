@@ -1,42 +1,53 @@
 import React, { useState } from 'react';
 import Board from './components/Board';
 import PlayersPanel from './components/PlayersPanel';
-import Header from './components/Header';
+import axios from 'axios';
 
 const App = () => {
-  const [player1, setPlayer1] = useState('');
-  const [player2, setPlayer2] = useState('');
+  const [player1Name, setPlayer1Name] = useState('');
+  const [player2Name, setPlayer2Name] = useState('');
+  const [player1Id, setPlayer1Id] = useState(null);
+  const [player2Id, setPlayer2Id] = useState(null);
   const [gameStarted, setGameStarted] = useState(false);
 
-  const startGame = () => {
-    if (player1 && player2) {
-      setGameStarted(true);
-    } else {
-      alert('Please enter names for both players.');
-    }
+  const handleStartGame = () => {
+    // Fetch or create player 1
+    axios.post('http://localhost:5000/players', { name: player1Name })
+      .then(response => {
+        setPlayer1Id(response.data.id);
+        return axios.post('http://localhost:5000/players', { name: player2Name });
+      })
+      .then(response => {
+        setPlayer2Id(response.data.id);
+        setGameStarted(true);
+      })
+      .catch(error => {
+        console.error('Error creating players:', error);
+        alert("Error creating players. Please check the console for more details.");
+      });
   };
 
   return (
     <div className="app">
-      <Header/>
       {!gameStarted ? (
-        <div className="start-game-form">
+        <div>
+          <h1>Tic-Tac-Toe</h1>
           <input 
             type="text" 
-            placeholder="Player 1 Name" 
-            value={player1} 
-            onChange={(e) => setPlayer1(e.target.value)} 
+            placeholder="Enter Player 1 Name"
+            value={player1Name}
+            onChange={e => setPlayer1Name(e.target.value)}
           />
           <input 
             type="text" 
-            placeholder="Player 2 Name" 
-            value={player2} 
-            onChange={(e) => setPlayer2(e.target.value)} 
+            placeholder="Enter Player 2 Name"
+            value={player2Name}
+            onChange={e => setPlayer2Name(e.target.value)}
           />
-          <button onClick={startGame}>Start Game</button>
+          <button onClick={handleStartGame}>Start Game</button>
         </div>
       ) : (
-        <Board player1={player1} player2={player2} />
+        <Board player1Id={player1Id} player2Id={player2Id} />
       )}
     </div>
   );
