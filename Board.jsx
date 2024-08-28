@@ -11,16 +11,24 @@ const Board = ({ player1Id, player2Id }) => {
   const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
-    // Create a new game when the component mounts with real player IDs
-    axios.post('http://localhost:5000/games', {
-      first_player_id: player1Id,
-      second_player_id: player2Id
-    })
-    .then(response => {
-      setGameId(response.data.id);
-      setCells(response.data.board);
-    })
-    .catch(error => console.error('Error creating game:', error));
+    console.log("Player 1 ID:", player1Id);
+    console.log("Player 2 ID:", player2Id);
+
+    if (player1Id && player2Id) {
+      // Create a new game when the component mounts with real player IDs
+      axios.post('http://localhost:5000/games', {
+        first_player_id: player1Id,
+        second_player_id: player2Id
+      })
+      .then(response => {
+        console.log("Game created successfully:", response.data);
+        setGameId(response.data.id);
+        setCells(response.data.board);
+      })
+      .catch(error => console.error('Error creating game:', error));
+    } else {
+      console.error('Player IDs are invalid:', player1Id, player2Id);
+    }
   }, [player1Id, player2Id]);
 
   const handleCellClick = (index) => {
