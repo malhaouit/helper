@@ -25,14 +25,18 @@ const Board = ({ player1Id, player2Id }) => {
         setGameId(response.data.id);
         setCells(response.data.board);
       })
-      .catch(error => console.error('Error creating game:', error));
+      .catch(error => {
+        console.error('Error creating game:', error);
+        alert("Error creating game. Please check the backend logs.");
+      });
     } else {
       console.error('Player IDs are invalid:', player1Id, player2Id);
+      alert("Player IDs are invalid. Please check the console for more details.");
     }
   }, [player1Id, player2Id]);
 
   const handleCellClick = (index) => {
-    if (cells[index] === '' && !gameOver) {
+    if (cells[index] === '' && !gameOver && gameId) {
       axios.put(`http://localhost:5000/games/${gameId}/move`, {
         index: index,
         player: currentPlayer
@@ -46,7 +50,13 @@ const Board = ({ player1Id, player2Id }) => {
           setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
         }
       })
-      .catch(error => console.error('Error making move:', error));
+      .catch(error => {
+        console.error('Error making move:', error);
+        alert("Error making move. Please check the backend logs.");
+      });
+    } else if (!gameId) {
+      console.error('Game ID is null, cannot make a move');
+      alert("Game ID is null. Cannot make a move. Please refresh and start a new game.");
     }
   };
 
