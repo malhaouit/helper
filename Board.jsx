@@ -4,24 +4,24 @@ import Cell from './Cell';
 import PlayersPanel from './PlayersPanel';
 import '../App.css';
 
-const Board = ({ player1, player2 }) => {
+const Board = ({ player1Id, player2Id }) => {
   const [gameId, setGameId] = useState(null);
   const [cells, setCells] = useState(Array(9).fill(''));
   const [currentPlayer, setCurrentPlayer] = useState('X');
   const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
-    // Create a new game when the component mounts with real player names
+    // Create a new game when the component mounts with real player IDs
     axios.post('http://localhost:5000/games', {
-      first_player: player1,
-      second_player: player2
+      first_player_id: player1Id,
+      second_player_id: player2Id
     })
     .then(response => {
       setGameId(response.data.id);
       setCells(response.data.board);
     })
     .catch(error => console.error('Error creating game:', error));
-  }, [player1, player2]);
+  }, [player1Id, player2Id]);
 
   const handleCellClick = (index) => {
     if (cells[index] === '' && !gameOver) {
@@ -51,7 +51,7 @@ const Board = ({ player1, player2 }) => {
 
   return (
     <div className="app">
-      <PlayersPanel player1={player1} player2={player2} />
+      <PlayersPanel player1="Player 1" player2="Player 2" />
       <div className="board">
         {cells.map((cell, index) => (
           <Cell
