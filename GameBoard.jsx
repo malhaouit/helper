@@ -1,38 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cell from './Cell';
-import './GameBoard.css'; // Import the new CSS file
+import './GameBoard.css';
 
 const GameBoard = ({ gameId, player1Id, player2Id, onGameOver }) => {
   const [cells, setCells] = useState(Array(9).fill(''));
   const [currentPlayer, setCurrentPlayer] = useState('X');
   const [gameOver, setGameOver] = useState(false);
-  const [player1Name, setPlayer1Name] = useState('Player 1');
-  const [player2Name, setPlayer2Name] = useState('Player 2');
+  const [player1Name, setPlayer1Name] = useState('');
+  const [player2Name, setPlayer2Name] = useState('');
 
   useEffect(() => {
     const fetchGame = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/games/${gameId}`);
         setCells(response.data.board);
-      } catch (error) {
-        console.error('Error fetching game:', error);
-      }
-    };
 
-    const fetchPlayerNames = async () => {
-      try {
+        // Fetch player names
         const player1Response = await axios.get(`http://localhost:5000/players/${player1Id}`);
         const player2Response = await axios.get(`http://localhost:5000/players/${player2Id}`);
         setPlayer1Name(player1Response.data.name);
         setPlayer2Name(player2Response.data.name);
       } catch (error) {
-        console.error('Error fetching player names:', error);
+        console.error('Error fetching game or players:', error);
       }
     };
 
     fetchGame();
-    fetchPlayerNames();
   }, [gameId, player1Id, player2Id]);
 
   const handleCellClick = async (index) => {
@@ -46,7 +40,9 @@ const GameBoard = ({ gameId, player1Id, player2Id, onGameOver }) => {
         setCells(response.data.board);
         if (response.data.winner) {
           setGameOver(true);
-          onGameOver(response.data.winner);
+
+          const winnerName = response.data.winner === 'X' ? player1Name : player2Name;
+          onGameOver(winnerName);
         } else {
           setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
         }
@@ -58,7 +54,7 @@ const GameBoard = ({ gameId, player1Id, player2Id, onGameOver }) => {
   };
 
   return (
-    <div className="game-board-container">
+    <div>
       <h2>Current Player: {currentPlayer === 'X' ? player1Name : player2Name}</h2>
       <div className="board">
         {cells.map((cell, index) => (
