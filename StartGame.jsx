@@ -21,6 +21,9 @@ const StartGame = ({ onStart }) => {
       });
       const player2 = player2Response.data;
 
+      console.log('Player 1:', player1);
+      console.log('Player 2:', player2);
+
       // Start a new game with existing player IDs
       const gameResponse = await axios.post('http://localhost:5000/games', {
         first_player_id: player1.id,
@@ -29,11 +32,13 @@ const StartGame = ({ onStart }) => {
 
       const game = gameResponse.data;
 
+      console.log('Game created:', game);
+
       // Pass the game and player data to the parent component
       onStart(game.id, player1, player2);
 
     } catch (error) {
-      console.error('Error creating players or starting the game:', error);
+      console.error('Error creating players or starting the game:', error.response ? error.response.data : error.message);
       alert('Error creating players. Please check the console for more details.');
     }
   };
