@@ -1,4 +1,5 @@
 import React from 'react';
+import './Cell.css';
 
 const Cell = ({ value, onClick }) => {
   return (
@@ -9,3 +10,4 @@ const Cell = ({ value, onClick }) => {
 };
 
 export default Cell;
+

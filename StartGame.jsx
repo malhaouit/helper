@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './StartGame.css'; // Added for styling
+import './StartGame.css'; // Import the new CSS file
 
 const StartGame = ({ onStartGame }) => {
   const [player1Name, setPlayer1Name] = useState('');
@@ -40,7 +40,7 @@ const StartGame = ({ onStartGame }) => {
         onChange={(e) => setPlayer2Name(e.target.value)}
         className="player-input"
       />
-      <button onClick={handleStart} className="start-game-button">Start Game</button>
+      <button onClick={handleStart} className="start-button">Start Game</button>
     </div>
   );
 };
