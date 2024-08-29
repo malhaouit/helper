@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './StartGame.css'; // Added for styling
 
 const StartGame = ({ onStartGame }) => {
   const [player1Name, setPlayer1Name] = useState('');
@@ -23,21 +24,23 @@ const StartGame = ({ onStartGame }) => {
   };
 
   return (
-    <div>
+    <div className="start-game-container">
       <h1>Start a New Game</h1>
       <input
         type="text"
         placeholder="Player 1 Name"
         value={player1Name}
         onChange={(e) => setPlayer1Name(e.target.value)}
+        className="player-input"
       />
       <input
         type="text"
         placeholder="Player 2 Name"
         value={player2Name}
         onChange={(e) => setPlayer2Name(e.target.value)}
+        className="player-input"
       />
-      <button onClick={handleStart}>Start Game</button>
+      <button onClick={handleStart} className="start-game-button">Start Game</button>
     </div>
   );
 };
