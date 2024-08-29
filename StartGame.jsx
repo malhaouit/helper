@@ -1,63 +1,43 @@
-// StartGame.jsx (React component)
-
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const StartGame = ({ onStart }) => {
+const StartGame = ({ onStartGame }) => {
   const [player1Name, setPlayer1Name] = useState('');
   const [player2Name, setPlayer2Name] = useState('');
 
-  const handleStartGame = async () => {
+  const handleStart = async () => {
     try {
-      // Check or create player 1
-      const player1Response = await axios.post('http://localhost:5000/players', {
-        name: player1Name,
-      });
-      const player1 = player1Response.data;
+      const player1 = await axios.post('http://localhost:5000/players', { name: player1Name });
+      const player2 = await axios.post('http://localhost:5000/players', { name: player2Name });
 
-      // Check or create player 2
-      const player2Response = await axios.post('http://localhost:5000/players', {
-        name: player2Name,
-      });
-      const player2 = player2Response.data;
-
-      console.log('Player 1:', player1);
-      console.log('Player 2:', player2);
-
-      // Start a new game with existing player IDs
-      const gameResponse = await axios.post('http://localhost:5000/games', {
-        first_player_id: player1.id,
-        second_player_id: player2.id,
+      const game = await axios.post('http://localhost:5000/games', {
+        first_player_id: player1.data.id,
+        second_player_id: player2.data.id,
       });
 
-      const game = gameResponse.data;
-
-      console.log('Game created:', game);
-
-      // Pass the game and player data to the parent component
-      onStart(game.id, player1, player2);
-
+      onStartGame(game.data);
     } catch (error) {
-      console.error('Error creating players or starting the game:', error.response ? error.response.data : error.message);
+      console.error('Error creating players or game:', error);
       alert('Error creating players. Please check the console for more details.');
     }
   };
 
   return (
     <div>
+      <h1>Start a New Game</h1>
       <input
         type="text"
+        placeholder="Player 1 Name"
         value={player1Name}
         onChange={(e) => setPlayer1Name(e.target.value)}
-        placeholder="Player 1 Name"
       />
       <input
         type="text"
+        placeholder="Player 2 Name"
         value={player2Name}
         onChange={(e) => setPlayer2Name(e.target.value)}
-        placeholder="Player 2 Name"
       />
-      <button onClick={handleStartGame}>Start Game</button>
+      <button onClick={handleStart}>Start Game</button>
     </div>
   );
 };
