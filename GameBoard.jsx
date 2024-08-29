@@ -11,22 +11,26 @@ const GameBoard = ({ gameId, player1Id, player2Id, onGameOver }) => {
   const [player2Name, setPlayer2Name] = useState('');
 
   useEffect(() => {
-    const fetchGame = async () => {
+    const fetchGameAndPlayers = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/games/${gameId}`);
-        setCells(response.data.board);
+        // Fetch the current game state
+        const gameResponse = await axios.get(`http://localhost:5000/games/${gameId}`);
+        setCells(gameResponse.data.board);
 
-        // Fetch player names
+        // Fetch player 1's name
         const player1Response = await axios.get(`http://localhost:5000/players/${player1Id}`);
-        const player2Response = await axios.get(`http://localhost:5000/players/${player2Id}`);
         setPlayer1Name(player1Response.data.name);
+
+        // Fetch player 2's name
+        const player2Response = await axios.get(`http://localhost:5000/players/${player2Id}`);
         setPlayer2Name(player2Response.data.name);
+
       } catch (error) {
         console.error('Error fetching game or players:', error);
       }
     };
 
-    fetchGame();
+    fetchGameAndPlayers();
   }, [gameId, player1Id, player2Id]);
 
   const handleCellClick = async (index) => {
@@ -40,7 +44,6 @@ const GameBoard = ({ gameId, player1Id, player2Id, onGameOver }) => {
         setCells(response.data.board);
         if (response.data.winner) {
           setGameOver(true);
-
           const winnerName = response.data.winner === 'X' ? player1Name : player2Name;
           onGameOver(winnerName);
         } else {
