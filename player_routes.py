@@ -19,13 +19,14 @@ def generate_uuid():
     """
     return str(uuid.uuid4())
 
+
 @bp.route('/players', methods=['POST'], strict_slashes=False)
 def create_player():
     """
     Creates a new player and inserts them into the database
     """
     data = request.json
-    
+
     if not data.get("name"):
         return jsonify({"error": "Player name is required"}), 400
     if not isinstance(data.get("name"), str):
@@ -41,7 +42,7 @@ def create_player():
         existing_player["_id"] = str(existing_player["_id"])
         return jsonify(existing_player), 200
 
-    # Create palyer document
+    # Create player document
     player = {
             "id": str(generate_uuid()),
             "name": data.get("name", None),
