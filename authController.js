@@ -73,7 +73,7 @@ exports.login = async (req, res) => {
         // Find the user using Mongoose
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ msg: 'Invalid Email' });
+            return res.status(400).json({ msg: 'Invalid credentials' });
         }
 
         // Compare the provided password with the hashed password in the database
