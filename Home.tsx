@@ -5,18 +5,23 @@ function Home() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Check if the user is logged in when the component loads
   useEffect(() => {
-    // Check if the token exists in localStorage
     const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);  // Set state based on token presence
+    setIsLoggedIn(!!token); // Update isLoggedIn based on token presence
   }, []);
 
   const handleLogout = async () => {
+    // Call the backend logout route (optional, as we discussed)
     await fetch('http://localhost:8080/api/auth/logout', {
       method: 'POST',
     });
 
+    // Remove token from localStorage
     localStorage.removeItem('token');
+
+    // Update state and redirect to the login page
+    setIsLoggedIn(false);
     navigate('/login');
   };
 

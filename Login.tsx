@@ -7,22 +7,29 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    // Simulate login logic
-    const response = await fetch('http://localhost:8080/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await response.json();
-    if (data.token) {
-      // Handle successful login, e.g., store token
-      console.log('Login successful');
-      navigate('/');  // Redirect to home or events page
-    } else {
-      alert('Invalid credentials');
+      const data = await response.json();
+
+      if (data.token) {
+        // Store token in localStorage after successful login
+        localStorage.setItem('token', data.token);
+
+        // Redirect to the home page
+        navigate('/');
+      } else {
+        alert('Invalid credentials');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('An error occurred during login.');
     }
   };
 
@@ -42,7 +49,6 @@ function Login() {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button onClick={handleLogin}>Login</button>
-      <Link to="/reset-password">Reset Password</Link>
       <p>
         Don't have an account? <Link to="/signup">Sign Up</Link>
       </p>
