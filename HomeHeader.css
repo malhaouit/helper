@@ -3,16 +3,46 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 15px 30px;
   background-color: #ffffff; /* White background */
   border-bottom: 1px solid #ddd; /* Light border for header */
+  box-sizing: border-box;
 }
 
 /* Logo styling */
-.home-header-logo {
+.home-header-logo a {
   font-size: 24px;
   font-weight: bold;
   color: #000; /* Black for logo text */
+  text-decoration: none;
+}
+
+/* Search Bar styling */
+.home-header-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #f1f1f1;
+  border-radius: 20px;
+  padding: 8px 15px;
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.search-input {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 16px;
+  width: 300px;
+  padding-left: 10px;
+}
+
+.search-input::placeholder {
+  color: #999;
 }
 
 /* Navigation styling */
@@ -31,40 +61,19 @@
   color: #12CB44; /* Hover effect: green */
 }
 
-/* Auth buttons (login, signup, logout) */
+/* Authentication Links (Login, Sign Up) */
 .home-header-auth {
   display: flex;
-  gap: 10px;
+  gap: 20px;
 }
 
-.home-header-login,
-.home-header-signup,
-.home-header-logout {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
+.auth-link {
   cursor: pointer;
+  font-size: 18px;
+  text-decoration: none;
+  color: #333;
 }
 
-.home-header-login {
-  background-color: #12CB44; /* Green for login */
-  color: white;
-}
-
-.home-header-signup {
-  background-color: #ffffff;
-  border: 2px solid #12CB44; /* White with green border for signup */
-  color: #12CB44;
-}
-
-.home-header-logout {
-  background-color: #ff4d4d; /* Red for logout */
-  color: white;
-}
-
-.home-header-login:hover,
-.home-header-signup:hover,
-.home-header-logout:hover {
-  opacity: 0.9; /* Hover effect for buttons */
+.auth-link:hover {
+  color: #12CB44; /* Green hover effect */
 }
