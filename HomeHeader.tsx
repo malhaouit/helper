@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './HomeHeader.css'; // Import the styles for the HomeHeader
-import searchIcon from '../../assets/search-icon.svg'; // Import your search icon
+import logo from '../../assets/logo.svg'; // Import your logo file
 
 function HomeHeader() {
   const navigate = useNavigate();
@@ -13,14 +13,16 @@ function HomeHeader() {
 
   return (
     <header className="home-header">
-      {/* Logo/Brand Name */}
+      {/* Logo image */}
       <div className="home-header-logo">
-        <Link to="/">Online Event Finder</Link>
+        <Link to="/">
+          <img src={logo} alt="Online Event Finder" className="header-logo-img" />
+        </Link>
       </div>
 
       {/* Search Bar */}
       <div className="home-header-search">
-        <img src={searchIcon} alt="Search Icon" className="search-icon" />
+        <img src="/assets/search-icon.svg" alt="Search Icon" className="search-icon" />
         <input
           type="text"
           placeholder="Search events, profiles..."

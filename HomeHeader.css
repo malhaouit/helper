@@ -10,11 +10,9 @@
 }
 
 /* Logo styling */
-.home-header-logo a {
-  font-size: 24px;
-  font-weight: bold;
-  color: #000; /* Black for logo text */
-  text-decoration: none;
+.header-logo-img {
+  height: 50px; /* Adjust the size of your logo as needed */
+  cursor: pointer;
 }
 
 /* Search Bar styling */
