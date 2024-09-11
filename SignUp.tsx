@@ -8,7 +8,7 @@ function SignUp() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');  // New state for confirmation
+  const [confirmPassword, setConfirmPassword] = useState('');  // Added confirmPassword state
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
@@ -18,20 +18,28 @@ function SignUp() {
       return;
     }
 
-    const response = await fetch('http://localhost:7999/api/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, email, password }),
-    });
+    try {
+      const response = await fetch('http://localhost:7999/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),  // Sending form data
+      });
 
-    const data = await response.json();
-    if (data.token) {
-      console.log('Sign-up successful');
-      navigate('/login');  // Redirect to login page after sign-up
-    } else {
-      alert('Sign-up failed');
+      const data = await response.json();
+      
+      // Check if the response status is ok
+      if (response.ok) {
+        console.log('Sign-up successful', data);
+        navigate('/login');  // Redirect to login page after sign-up
+      } else {
+        console.log('Sign-up failed', data);
+        alert(data.msg || 'Sign-up failed');  // Show the error message from backend
+      }
+    } catch (error) {
+      console.error('Error during sign-up:', error);
+      alert('An error occurred during sign-up.');
     }
   };
 
@@ -67,7 +75,7 @@ function SignUp() {
           placeholder="Confirm Password"
           className="signup-input"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}  // Handle confirm password input
+          onChange={(e) => setConfirmPassword(e.target.value)}  // Input for confirming password
         />
         <button onClick={handleSignUp} className="signup-button">
           Sign Up
