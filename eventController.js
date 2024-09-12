@@ -96,4 +96,29 @@ exports.getEvents = async (req, res) => {
         console.error(err.message);
         res.status(500).send('Server error');
     }
+}
+
+// Search for events by title, description, or location
+exports.searchEvents = async (req, res) => {
+    const { query } = req.query;  // The search query from the frontend
+
+    try {
+        // Perform a case-insensitive search using a regular expression on title, description, or location
+        const events = await Event.find({
+            $or: [
+                { title: { $regex: query, $options: 'i' } },  // Case-insensitive search on title
+                { description: { $regex: query, $options: 'i' } },  // Case-insensitive search on description
+                { location: { $regex: query, $options: 'i' } }  // Case-insensitive search on location
+            ]
+        });
+
+        if (events.length === 0) {
+            return res.status(404).json({ msg: 'No events found' });
+        }
+
+        res.json(events);
+    } catch (error) {
+        console.error('Error searching events:', error.message);
+        res.status(500).send('Server error');
+    }
 };
