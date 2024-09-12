@@ -1,63 +1,95 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './HomeHeader.css'; // Import the styles for the HomeHeader
 import logo from '../../assets/logo.svg'; // Import your logo file
 import searchIcon from '../../assets/search-icon.svg';
 import { FaHome, FaInfoCircle, FaSignInAlt, FaUserPlus, FaCalendarPlus } from 'react-icons/fa';
-import { useState } from 'react';
 
 function HomeHeader() {
-  const navigate = useNavigate();
-  const isLoggedIn = !!localStorage.getItem('token'); // Check if the user is logged in
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]); // Store search results
+  const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem('token');
+
+  // Fetch matching events as the user types
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      if (searchQuery.length > 2) { // Only search after 3 characters
+        const response = await fetch(`http://localhost:7999/api/event/search?q=${searchQuery}`);
+        const data = await response.json();
+        setSearchResults(data);
+      } else {
+        setSearchResults([]); // Clear results when query is too short
+      }
+    };
+    fetchSearchResults();
+  }, [searchQuery]);
+
+  const handleSearch = () => {
+    if (searchQuery) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  const handleEventClick = (eventId) => {
+    navigate(`/event/${eventId}`);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate('/'); // Redirect to home page after logout
-  };
-
-  // Handle search form submission
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/search?q=${searchQuery}`); // Redirect to the search results page with the query
-    }
+    navigate('/');
   };
 
   return (
     <header className="home-header">
       {/* Logo image */}
       <div className="home-header-logo">
-        <Link to="/">
+        <a href="/">
           <img src={logo} alt="Online Event Finder" className="header-logo-img" />
-        </Link>
+        </a>
       </div>
 
-      {/* Search Bar */}
-      <form onSubmit={handleSearch} className="home-header-search">
-        <img src={searchIcon} alt="Search Icon" className="search-icon" />
+      {/* Search Bar with Icon */}
+      <div className="home-header-search">
+        <img
+          src={searchIcon}
+          alt="Search Icon"
+          className="search-icon"
+          onClick={handleSearch} // Trigger search when clicking the icon
+        />
         <input
           type="text"
           placeholder="Search events, profiles..."
-          className="search-input"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)} // Update search query state
+          onChange={(e) => setSearchQuery(e.target.value)} // Set search query
+          className="search-input"
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()} // Trigger search on Enter
         />
-      </form>
+        {searchResults.length > 0 && (
+          <ul className="search-dropdown">
+            {searchResults.map((event) => (
+              <li key={event._id} onClick={() => handleEventClick(event._id)}>
+                {event.title}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       {/* Navigation Links */}
       <nav className="home-header-nav">
-        <Link to="/">
+        <a href="/">
           <div className="nav-icon-text">
             <FaHome />
             <span>Home</span>
           </div>
-        </Link>
-        <Link to="/about">
+        </a>
+        <a href="/about">
           <div className="nav-icon-text">
             <FaInfoCircle />
             <span>About</span>
           </div>
-        </Link>
+        </a>
       </nav>
 
       {/* Authentication Links */}
@@ -66,18 +98,18 @@ function HomeHeader() {
           <span onClick={handleLogout} className="auth-link">Logout</span>
         ) : (
           <>
-            <Link to="/login" className="auth-link">
+            <a href="/login" className="auth-link">
               <div className="nav-icon-text">
                 <FaSignInAlt />
                 <span>Login</span>
               </div>
-            </Link>
-            <Link to="/signup" className="auth-link">
+            </a>
+            <a href="/signup" className="auth-link">
               <div className="nav-icon-text">
                 <FaUserPlus />
                 <span>Sign Up</span>
               </div>
-            </Link>
+            </a>
           </>
         )}
       </div>
