@@ -13,7 +13,8 @@ function SignUp() {
 
   const handleSignUp = async () => {
     // Check if the passwords match before sending the request
-    if (password !== confirmPassword) {
+    console.log(`Password: ${password}, Confirm Password: ${confirmPassword}`); // Log passwords
+    if (password.trim() !== confirmPassword.trim()) {
       alert('Passwords do not match!');
       return;
     }
