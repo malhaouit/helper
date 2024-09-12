@@ -7,6 +7,11 @@
   background-color: #ffffff; /* White background */
   border-bottom: 1px solid #ddd; /* Light border for header */
   box-sizing: border-box;
+  position: fixed; /* Fixes the header at the top of the viewport */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Ensures the header is above other content */
 }
 
 /* Logo styling */
@@ -28,6 +33,7 @@
 .search-icon {
   width: 20px;
   height: 20px;
+  cursor: pointer; /* Make the icon clickable */
 }
 
 .search-input {
@@ -75,3 +81,22 @@
 .auth-link:hover {
   color: #12CB44; /* Green hover effect */
 }
+
+.nav-icon-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+ 
+}
+
+.nav-icon-text svg {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.nav-icon-text span {
+  font-size: 14px;
+}
+
+
