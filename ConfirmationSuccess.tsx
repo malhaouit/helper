@@ -1,19 +1,31 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './ConfirmationSuccess.css'; // Create this file for custom styles
 
 function ConfirmationSuccess() {
+  const [countdown, setCountdown] = useState(5); // 5-second countdown
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => {
-      navigate('/login'); // Redirect to login after 3 seconds
-    }, 3000);
-  }, [navigate]);
+    const timer = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+
+    // Redirect to login page after countdown
+    if (countdown === 0) {
+      navigate('/login');
+    }
+
+    return () => clearInterval(timer); // Clear timer on component unmount
+  }, [countdown, navigate]);
 
   return (
     <div className="confirmation-success-container">
-      <h1>Email Confirmed!</h1>
-      <p>Your email has been confirmed. Redirecting to login...</p>
+      <div className="confirmation-message">
+        <div className="success-icon">✔️</div> {/* You can replace with a custom icon */}
+        <h1>Email Confirmed Successfully!</h1>
+        <p>Your email has been successfully verified. You will be redirected to the login page in {countdown} seconds.</p>
+      </div>
     </div>
   );
 }
