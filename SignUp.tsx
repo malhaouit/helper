@@ -8,12 +8,12 @@ function SignUp() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');  // Add confirm password field
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
     if (password !== confirmPassword) {
-      alert('Passwords do not match!');
+      alert('Passwords do not match');
       return;
     }
 
@@ -22,16 +22,25 @@ function SignUp() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name, email, password, confirmPassword }),  // Ensure confirmPassword is included
+      body: JSON.stringify({ name, email, password, confirmPassword }),
     });
 
     const data = await response.json();
-    if (data.token) {
-      // Handle successful sign-up, e.g., store token
-      console.log('Sign-up successful');
-      navigate('/login');  // Redirect to login page after sign-up
+
+    if (response.ok) {
+      // Alert the user about the confirmation email
+      alert('A confirmation link has been sent to your email.');
+
+      // Clear the input fields after successful registration
+      setName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+
+      // Optionally, redirect the user to another page after sign-up
+      navigate('/login');
     } else {
-      alert('Sign-up failed');
+      alert(data.msg || 'Sign-up failed');
     }
   };
 
@@ -65,7 +74,7 @@ function SignUp() {
         <input
           type="password"
           placeholder="Confirm Password"
-          className="signup-input"  // Add input for confirm password
+          className="signup-input"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
@@ -82,3 +91,4 @@ function SignUp() {
 }
 
 export default SignUp;
+
