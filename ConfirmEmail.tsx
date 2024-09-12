@@ -1,34 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 function ConfirmEmail() {
-  const { token } = useParams();  // Extract token from the URL
-  const [message, setMessage] = useState('');  // For success/error messages
+  const { token } = useParams();
   const navigate = useNavigate();
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    // Function to confirm the email
     const confirmEmail = async () => {
       try {
-        const response = await fetch(`http://localhost:7999/api/auth/confirm/${token}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        const data = await response.json();
+        const response = await fetch(`http://localhost:7999/api/auth/confirm/${token}`);
 
         if (response.ok) {
-          setMessage('Email confirmed successfully! Redirecting to login...');
-          setTimeout(() => {
-            navigate('/login');  // Redirect to login after 3 seconds
-          }, 3000);  // Delay before redirecting
+          navigate('/confirmation-success'); // Redirect to success page
         } else {
           setMessage('Invalid or expired confirmation token.');
         }
       } catch (error) {
-        setMessage('An error occurred while confirming your email.');
+        setMessage('Error confirming email.');
       }
     };
 
@@ -37,8 +26,7 @@ function ConfirmEmail() {
 
   return (
     <div className="confirm-email-container">
-      <h1>Email Confirmation</h1>
-      <p>{message}</p>
+      <h1>{message || 'Confirming email...'}</h1>
     </div>
   );
 }
