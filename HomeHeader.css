@@ -99,4 +99,25 @@
   font-size: 14px;
 }
 
+/* Search Dropdown */
+.search-dropdown {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 5px;
+  width: 300px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1001;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
 
+.search-dropdown li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.search-dropdown li:hover {
+  background-color: #f1f1f1;
+}
