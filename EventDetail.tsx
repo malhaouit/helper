@@ -1,45 +1,47 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import '../styles/EventDetails.css';
 
-function EventDetail() {
-  const { id } = useParams(); // Get the event ID from the URL
+function EventDetails() {
+  const { eventId } = useParams();
   const [event, setEvent] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchEvent = async () => {
-      try {
-        const response = await fetch(`http://localhost:7999/api/event/${id}`);
-        if (response.ok) {
-          const data = await response.json();
-          setEvent(data);
-        } else {
-          setError('Event not found');
-        }
-      } catch (err) {
-        setError('Error fetching event details');
-      } finally {
-        setLoading(false);
-      }
+    const fetchEventDetails = async () => {
+      const response = await fetch(`http://localhost:7999/api/event/${eventId}`);
+      const data = await response.json();
+      setEvent(data);
     };
 
-    fetchEvent();
-  }, [id]);
+    fetchEventDetails();
+  }, [eventId]);
 
-  if (loading) return <p>Loading event details...</p>;
-  if (error) return <p>{error}</p>;
+  if (!event) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="event-detail-container">
+    <div className="event-details">
       <h1>{event.title}</h1>
-      <p><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
-      <p><strong>Time:</strong> {event.time}</p>
-      <p><strong>Location:</strong> {event.location}</p>
-      <p><strong>Organizer:</strong> {event.organizer.name}</p>
       <p>{event.description}</p>
+
+      <div className="event-info">
+        <div>
+          <label>Date:</label> {new Date(event.date).toLocaleDateString()}
+        </div>
+        <div>
+          <label>Location:</label> {event.location}
+        </div>
+      </div>
+
+      <div className="capacity">
+        <label>Capacity:</label> {event.capacity}
+      </div>
+
+      {/* If you want a call-to-action button */}
+      <button className="cta-button">Register for this event</button>
     </div>
   );
 }
 
-export default EventDetail;
+export default EventDetails;
