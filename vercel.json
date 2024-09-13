@@ -1,17 +1,14 @@
 {
   "builds": [
     {
-      "src": "frontend/package.json",  // Path to your frontend project
-      "use": "@vercel/static-build",  // Use the static build target
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist"  // Ensure the dist directory is used for output
+        "distDir": "frontend/dist"
       }
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",  // Catch all routes
-      "dest": "/index.html"  // Route all requests to index.html (for client-side routing)
-    }
+    { "src": "/(.*)", "dest": "/frontend/dist/index.html" }
   ]
 }
