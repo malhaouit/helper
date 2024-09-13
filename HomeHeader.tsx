@@ -79,16 +79,13 @@ function HomeHeader() {
       {/* Navigation Links */}
       <nav className="home-header-nav">
         <a href="/">
-          <div className="nav-icon-text">
-            <FaHome />
-            <span>Home</span>
-          </div>
+          <FaHome className="nav-icon" /> {/* Removed subtitle */}
         </a>
         <a href="/about">
-          <div className="nav-icon-text">
-            <FaInfoCircle />
-            <span>About</span>
-          </div>
+          <FaInfoCircle className="nav-icon" /> {/* Removed subtitle */}
+        </a>
+        <a href="/add-event">  {/* Added Add Event icon */}
+          <FaCalendarPlus className="nav-icon" />
         </a>
       </nav>
 
@@ -99,16 +96,10 @@ function HomeHeader() {
         ) : (
           <>
             <a href="/login" className="auth-link">
-              <div className="nav-icon-text">
-                <FaSignInAlt />
-                <span>Login</span>
-              </div>
+              <FaSignInAlt className="nav-icon" /> {/* Removed subtitle */}
             </a>
             <a href="/signup" className="auth-link">
-              <div className="nav-icon-text">
-                <FaUserPlus />
-                <span>Sign Up</span>
-              </div>
+              <FaUserPlus className="nav-icon" /> {/* Removed subtitle */}
             </a>
           </>
         )}
