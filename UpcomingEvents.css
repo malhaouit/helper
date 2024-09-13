@@ -1,7 +1,6 @@
 .section-wrapper {
     padding: 25px;
     margin-top: 20px;
-    border-radius: 0px;
     max-width: 1200px;
     margin: 0 auto;
     background-color: transparent;
@@ -15,6 +14,7 @@
     margin-bottom: 20px;
 }
 
+/* Flexbox for event items */
 .UpcomingEvents-items {
     display: flex;
     justify-content: space-between;
@@ -22,11 +22,10 @@
     gap: 20px;
 }
 
+/* Each event item box */
 .UpcomingEvents-item {
     flex: 1 0 23%;
     margin-bottom: 20px;
-    display: flex;
-    flex-direction: column; /* Ensure the content fills the card vertically */
 }
 
 .card-wrapper {
@@ -34,9 +33,13 @@
     border-radius: 12px;
     padding: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Make all cards the same height */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Apply transition */
+}
+
+/* Zoom and shadow effect on hover */
+.card-wrapper:hover {
+    transform: scale(1.05); /* Slight zoom */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Larger shadow */
 }
 
 .UpcomingEvents-item-image {
@@ -47,7 +50,6 @@
 .UpcomingEvents-item-content {
     margin-top: 10px;
     color: black;
-    flex-grow: 1; /* Ensures that the content fills the available space */
 }
 
 .UpcomingEvents-item-title {
@@ -56,6 +58,7 @@
     color: rgb(76, 74, 74);
 }
 
+/* Button Styling */
 .UpcomingEvents-button {
     display: flex;
     justify-content: center;
@@ -77,8 +80,15 @@
     background-color: #0da036;
 }
 
+/* Responsive Design */
 @media (max-width: 768px) {
     .UpcomingEvents-item {
         flex: 1 0 45%;
+    }
+}
+
+@media (max-width: 480px) {
+    .UpcomingEvents-item {
+        flex: 1 0 100%;
     }
 }
