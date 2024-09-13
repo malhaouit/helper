@@ -26,6 +26,8 @@
 .UpcomingEvents-item {
     flex: 1 0 23%;
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column; /* Ensures the content is stacked vertically */
 }
 
 .card-wrapper {
@@ -34,6 +36,10 @@
     padding: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Spread content evenly inside the card */
+    height: 100%; /* Ensures all cards are the same height */
 }
 
 .card-wrapper:hover {
@@ -60,8 +66,9 @@
 /* Button Styling */
 .UpcomingEvents-button {
     display: flex;
-    justify-content: center; /* Center the button horizontally */
+    justify-content: center;
     margin-top: 30px;
+    text-align: center;
 }
 
 .more-events-button {
@@ -91,3 +98,4 @@
         flex: 1 0 100%;
     }
 }
+
