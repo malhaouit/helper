@@ -8,14 +8,13 @@ import { FaHome, FaInfoCircle, FaSignInAlt, FaUserPlus, FaCalendarPlus } from 'r
 function HomeHeader() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]); 
-  const [user, setUser] = useState(null);  // Store the logged-in user data
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // Check if the user is logged in by retrieving the user from localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));  // Parse the stored user data
+      setUser(JSON.parse(storedUser));
     }
   }, []);
 
@@ -43,10 +42,10 @@ function HomeHeader() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('user');  // Remove user data from localStorage
-    localStorage.removeItem('token'); // Remove token from localStorage
-    setUser(null);  // Clear user state
-    navigate('/');  // Redirect to home page
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    setUser(null);
+    navigate('/');
   };
 
   return (
@@ -57,13 +56,13 @@ function HomeHeader() {
         </a>
       </div>
 
-      {/* Search Bar with Icon */}
+      {/* Search Bar */}
       <div className="home-header-search">
         <img
           src={searchIcon}
           alt="Search Icon"
           className="search-icon"
-          onClick={handleSearch} 
+          onClick={handleSearch}
         />
         <input
           type="text"
@@ -87,16 +86,10 @@ function HomeHeader() {
       {/* Navigation Links */}
       <nav className="home-header-nav">
         <a href="/">
-          <div className="nav-icon-text">
-            <FaHome />
-            <span>Home</span>
-          </div>
+          <FaHome />
         </a>
         <a href="/about">
-          <div className="nav-icon-text">
-            <FaInfoCircle />
-            <span>About</span>
-          </div>
+          <FaInfoCircle />
         </a>
       </nav>
 
@@ -104,23 +97,16 @@ function HomeHeader() {
       <div className="home-header-auth">
         {user ? (
           <>
-            {/* Display the user's name and a logout option */}
             <span className="user-info">{user.name}</span>
             <span onClick={handleLogout} className="auth-link">Logout</span>
           </>
         ) : (
           <>
             <a href="/login" className="auth-link">
-              <div className="nav-icon-text">
-                <FaSignInAlt />
-                <span>Login</span>
-              </div>
+              <FaSignInAlt />
             </a>
             <a href="/signup" className="auth-link">
-              <div className="nav-icon-text">
-                <FaUserPlus />
-                <span>Sign Up</span>
-              </div>
+              <FaUserPlus />
             </a>
           </>
         )}
@@ -130,3 +116,4 @@ function HomeHeader() {
 }
 
 export default HomeHeader;
+
