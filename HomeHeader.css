@@ -3,7 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px; /* Reduced padding for a more compact header */
+  padding: 10px 20px;
   background-color: #ffffff; /* White background */
   border-bottom: 1px solid #ddd; /* Light border for header */
   box-sizing: border-box;
@@ -12,17 +12,18 @@
   left: 0;
   right: 0;
   z-index: 1000; /* Ensures the header is above other content */
+  max-width: 1200px; /* Maximum width for the header */
+  margin: 0 auto; /* Center the header horizontally */
 }
 
 /* Logo styling */
 .header-logo-img {
-  height: 40px; /* Reduced logo size */
+  height: 40px; /* Adjust the size of your logo as needed */
   cursor: pointer;
 }
 
 /* Search Bar styling */
 .home-header-search {
-  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -55,11 +56,11 @@
 /* Navigation styling */
 .home-header-nav {
   display: flex;
-  gap: 25px; /* Increased gap between icons */
+  gap: 20px; /* Consistent gap between icons and navigation links */
 }
 
 .nav-icon {
-  font-size: 22px; /* Slightly reduced icon size */
+  font-size: 22px; /* Icon size */
   color: #333;
   cursor: pointer;
 }
@@ -71,7 +72,8 @@
 /* Authentication Links (Login, Sign Up) */
 .home-header-auth {
   display: flex;
-  gap: 15px; /* Adjusted spacing between authentication links */
+  align-items: center;
+  gap: 15px; /* Consistent gap between authentication links */
 }
 
 .auth-link {
@@ -83,6 +85,18 @@
 
 .auth-link:hover {
   color: #12CB44; /* Green hover effect */
+}
+
+/* User info and logout styling */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between the username and logout link */
+}
+
+.username {
+  font-size: 18px;
+  color: #333;
 }
 
 /* Search Dropdown */

@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import './HomeHeader.css'; // Import the styles for the HomeHeader
 import logo from '../../assets/logo.svg'; // Import your logo file
 import searchIcon from '../../assets/search-icon.svg';
-import { FaHome, FaInfoCircle, FaSignInAlt, FaUserPlus, FaCalendarPlus } from 'react-icons/fa';
+import { FaHome, FaInfoCircle, FaCalendarPlus, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 
 function HomeHeader() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]); // Store search results
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem('token');
+  const userInfo = localStorage.getItem('user'); // Retrieve user info from localStorage (e.g., name or email)
 
   // Fetch matching events as the user types
   useEffect(() => {
@@ -37,6 +38,7 @@ function HomeHeader() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user'); // Remove user info
     navigate('/');
   };
 
@@ -79,27 +81,30 @@ function HomeHeader() {
       {/* Navigation Links */}
       <nav className="home-header-nav">
         <a href="/">
-          <FaHome className="nav-icon" /> {/* Removed subtitle */}
+          <FaHome className="nav-icon" />
+        </a>
+        <a href="/add-event">
+          <FaCalendarPlus className="nav-icon" />
         </a>
         <a href="/about">
-          <FaInfoCircle className="nav-icon" /> {/* Removed subtitle */}
-        </a>
-        <a href="/add-event">  {/* Added Add Event icon */}
-          <FaCalendarPlus className="nav-icon" />
+          <FaInfoCircle className="nav-icon" />
         </a>
       </nav>
 
       {/* Authentication Links */}
       <div className="home-header-auth">
         {isLoggedIn ? (
-          <span onClick={handleLogout} className="auth-link">Logout</span>
+          <div className="user-info">
+            <span className="username">{userInfo || 'User'}</span> {/* Show username or email */}
+            <span onClick={handleLogout} className="auth-link">Logout</span>
+          </div>
         ) : (
           <>
             <a href="/login" className="auth-link">
-              <FaSignInAlt className="nav-icon" /> {/* Removed subtitle */}
+              <FaSignInAlt className="nav-icon" />
             </a>
             <a href="/signup" className="auth-link">
-              <FaUserPlus className="nav-icon" /> {/* Removed subtitle */}
+              <FaUserPlus className="nav-icon" />
             </a>
           </>
         )}
