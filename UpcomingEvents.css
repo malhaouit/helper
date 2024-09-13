@@ -27,7 +27,7 @@
     flex: 1 0 23%;
     margin-bottom: 20px;
     display: flex;
-    flex-direction: column; /* Ensures the content is stacked vertically */
+    flex-direction: column;
 }
 
 .card-wrapper {
@@ -38,8 +38,8 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Spread content evenly inside the card */
-    height: 100%; /* Ensures all cards are the same height */
+    justify-content: space-between;
+    height: 100%;
 }
 
 .card-wrapper:hover {
@@ -63,27 +63,27 @@
     color: rgb(76, 74, 74);
 }
 
-/* Button Styling */
-.UpcomingEvents-button {
+/* New styling for the button container */
+.UpcomingEvents-button-container {
     display: flex;
     justify-content: center;
-    margin-top: 30px;
-    text-align: center;
+    margin-top: 40px;
 }
 
 .more-events-button {
-    padding: 10px 20px;
+    padding: 12px 24px;
     background-color: #12CB44;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .more-events-button:hover {
     background-color: #0da036;
+    transform: scale(1.05);
 }
 
 /* Responsive Design */
@@ -98,4 +98,3 @@
         flex: 1 0 100%;
     }
 }
-
