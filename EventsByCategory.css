@@ -1,0 +1,35 @@
+.EventsByCategory-items {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px; /* Add some space between items */
+}
+
+.EventsByCategory-item {
+    flex: 1 0 15%; /* Each item will take up a percentage of the container's width */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1; /* Ensures a square ratio for width and height */
+    max-width: 150px; /* Set a maximum width for each item */
+    padding: 10px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.EventsByCategory-item img {
+    max-width: 80%;
+    height: auto;
+    border-radius: 12px;
+}
+
+.EventsByCategory-item-title {
+    font-size: 15px;
+    line-height: 1rem;
+    color: rgb(76, 74, 74);
+    text-align: center;
+    margin-top: 10px;
+}
