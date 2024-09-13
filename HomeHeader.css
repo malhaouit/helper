@@ -1,112 +1,106 @@
-/* Header container */
-.home-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
-    box-sizing: border-box;
-    margin-bottom: 20px; /* Add margin to separate header from the rest of the content */
+/* Section Wrapper */
+.section-wrapper {
+    padding: 25px;
+    margin-top: 20px;
     max-width: 1200px;
     margin: 0 auto;
+    background-color: transparent;
 }
 
-/* Logo styling */
-.header-logo-img {
-    height: 50px;
-    cursor: pointer;
-}
-
-/* Search Bar styling */
-.home-header-search {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #f1f1f1;
-    border-radius: 20px;
-    padding: 8px 15px;
-    width: 300px;
-}
-
-.search-icon {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
-
-.search-input {
-    border: none;
-    background: none;
-    outline: none;
-    font-size: 16px;
-    width: 100%;
-}
-
-.search-input::placeholder {
-    color: #999;
-}
-
-/* Dropdown results */
-.search-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    max-height: 200px;
-    overflow-y: auto;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 5px;
-    z-index: 1000;
-}
-
-.search-dropdown li {
-    padding: 10px;
-    cursor: pointer;
-    list-style: none;
-}
-
-.search-dropdown li:hover {
-    background-color: #f1f1f1;
-}
-
-/* Navigation Links */
-.home-header-nav a {
-    text-decoration: none;
-    color: #333;
+/* Section Header */
+.section-header h4 {
     font-size: 24px;
-    margin-left: 20px; /* Space between icons */
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.home-header-nav a:hover {
-    color: #12CB44;
-}
-
-/* Authentication Links */
-.home-header-auth {
+/* Flexbox for event items */
+.UpcomingEvents-items {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.auth-link {
+/* Each event item box */
+.UpcomingEvents-item {
+    flex: 1 0 23%; /* Ensure the items take 23% of the width with space for gaps */
+    margin-bottom: 20px;
+}
+
+/* Card styling for each event */
+.card-wrapper {
+    background-color: white;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Ensure consistent height */
+}
+
+.card-wrapper:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Event image */
+.UpcomingEvents-item-image {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+/* Event content */
+.UpcomingEvents-item-content {
+    margin-top: 10px;
+    color: black;
+}
+
+.UpcomingEvents-item-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(76, 74, 74);
+    margin-bottom: 10px;
+}
+
+/* Button Styling */
+.UpcomingEvents-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.more-events-button {
+    padding: 12px 24px;
+    background-color: #12CB44;
+    color: white;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 18px;
-    color: #333;
-    text-decoration: none;
-    margin-left: 20px; /* Space between logout and other items */
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.auth-link:hover {
-    color: #12CB44;
+.more-events-button:hover {
+    background-color: #0da036;
+    transform: scale(1.05);
 }
 
-/* User info for logged-in state */
-.user-info {
-    margin-right: 20px;
-    font-size: 18px;
-    color: #333;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .UpcomingEvents-item {
+        flex: 1 0 45%; /* Items will take 45% of the width on medium screens */
+    }
 }
+
+@media (max-width: 480px) {
+    .UpcomingEvents-item {
+        flex: 1 0 100%; /* Full width on small screens */
+    }
+}
+
