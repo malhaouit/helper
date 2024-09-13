@@ -1,26 +1,32 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './HomeHeader.css'; // Import the styles for the HomeHeader
-import logo from '../../assets/logo.svg'; // Import your logo file
+import './HomeHeader.css';
+import logo from '../../assets/logo.svg';
 import searchIcon from '../../assets/search-icon.svg';
-import { FaHome, FaInfoCircle, FaCalendarPlus, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
+import { FaHome, FaInfoCircle, FaSignInAlt, FaUserPlus, FaCalendarPlus } from 'react-icons/fa';
 
 function HomeHeader() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]); // Store search results
+  const [searchResults, setSearchResults] = useState([]); 
+  const [user, setUser] = useState(null);  // Store the logged-in user data
   const navigate = useNavigate();
-  const isLoggedIn = !!localStorage.getItem('token');
-  const userInfo = localStorage.getItem('user'); // Retrieve user info from localStorage (e.g., name or email)
 
-  // Fetch matching events as the user types
+  // Check if the user is logged in by retrieving the user from localStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));  // Parse the stored user data
+    }
+  }, []);
+
   useEffect(() => {
     const fetchSearchResults = async () => {
-      if (searchQuery.length > 2) { // Only search after 3 characters
+      if (searchQuery.length > 2) {
         const response = await fetch(`http://localhost:7999/api/event/search?q=${searchQuery}`);
         const data = await response.json();
         setSearchResults(data);
       } else {
-        setSearchResults([]); // Clear results when query is too short
+        setSearchResults([]);
       }
     };
     fetchSearchResults();
@@ -37,14 +43,14 @@ function HomeHeader() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user'); // Remove user info
-    navigate('/');
+    localStorage.removeItem('user');  // Remove user data from localStorage
+    localStorage.removeItem('token'); // Remove token from localStorage
+    setUser(null);  // Clear user state
+    navigate('/');  // Redirect to home page
   };
 
   return (
     <header className="home-header">
-      {/* Logo image */}
       <div className="home-header-logo">
         <a href="/">
           <img src={logo} alt="Online Event Finder" className="header-logo-img" />
@@ -57,15 +63,15 @@ function HomeHeader() {
           src={searchIcon}
           alt="Search Icon"
           className="search-icon"
-          onClick={handleSearch} // Trigger search when clicking the icon
+          onClick={handleSearch} 
         />
         <input
           type="text"
           placeholder="Search events, profiles..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)} // Set search query
+          onChange={(e) => setSearchQuery(e.target.value)}
           className="search-input"
-          onKeyDown={(e) => e.key === 'Enter' && handleSearch()} // Trigger search on Enter
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         />
         {searchResults.length > 0 && (
           <ul className="search-dropdown">
@@ -81,30 +87,40 @@ function HomeHeader() {
       {/* Navigation Links */}
       <nav className="home-header-nav">
         <a href="/">
-          <FaHome className="nav-icon" />
-        </a>
-        <a href="/add-event">
-          <FaCalendarPlus className="nav-icon" />
+          <div className="nav-icon-text">
+            <FaHome />
+            <span>Home</span>
+          </div>
         </a>
         <a href="/about">
-          <FaInfoCircle className="nav-icon" />
+          <div className="nav-icon-text">
+            <FaInfoCircle />
+            <span>About</span>
+          </div>
         </a>
       </nav>
 
       {/* Authentication Links */}
       <div className="home-header-auth">
-        {isLoggedIn ? (
-          <div className="user-info">
-            <span className="username">{userInfo || 'User'}</span> {/* Show username or email */}
+        {user ? (
+          <>
+            {/* Display the user's name and a logout option */}
+            <span className="user-info">{user.name}</span>
             <span onClick={handleLogout} className="auth-link">Logout</span>
-          </div>
+          </>
         ) : (
           <>
             <a href="/login" className="auth-link">
-              <FaSignInAlt className="nav-icon" />
+              <div className="nav-icon-text">
+                <FaSignInAlt />
+                <span>Login</span>
+              </div>
             </a>
             <a href="/signup" className="auth-link">
-              <FaUserPlus className="nav-icon" />
+              <div className="nav-icon-text">
+                <FaUserPlus />
+                <span>Sign Up</span>
+              </div>
             </a>
           </>
         )}
