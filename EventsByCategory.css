@@ -18,16 +18,13 @@
 
 /* Container for category items */
 .EventsByCategory-items {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    grid-gap: 20px; /* Space between boxes */
 }
 
 /* Individual category box */
 .EventsByCategory-item {
-    flex: 1 1 calc(33.33% - 20px); /* 3 items per row with a 20px gap */
-    max-width: calc(33.33% - 20px); /* Ensures max width aligns with the flex rule */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -62,15 +59,13 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .EventsByCategory-item {
-        flex: 1 1 calc(50% - 20px); /* 2 items per row for smaller screens */
-        max-width: calc(50% - 20px);
+    .EventsByCategory-items {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
     }
 }
 
 @media (max-width: 480px) {
-    .EventsByCategory-item {
-        flex: 1 1 100%; /* Full-width items for very small screens */
-        max-width: 100%;
+    .EventsByCategory-items {
+        grid-template-columns: 1fr; /* 1 column on small screens */
     }
 }
