@@ -1,23 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomeHeader.css';
-import logo from '../../assets/logo.svg';
+import logo from '../../assets/logo.svg'; // Replace with your actual logo path
 import searchIcon from '../../assets/search-icon.svg';
 import { FaHome, FaInfoCircle, FaSignInAlt, FaUserPlus, FaCalendarPlus } from 'react-icons/fa';
 
 function HomeHeader() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]); 
-  const [user, setUser] = useState(null);
+  const [searchResults, setSearchResults] = useState([]); // Store search results
   const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user')); // Assuming the user info is stored in localStorage
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
-
+  // Fetch matching events as the user types
   useEffect(() => {
     const fetchSearchResults = async () => {
       if (searchQuery.length > 2) {
@@ -42,21 +37,21 @@ function HomeHeader() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
     localStorage.removeItem('token');
-    setUser(null);
+    localStorage.removeItem('user');
     navigate('/');
   };
 
   return (
     <header className="home-header">
+      {/* Logo */}
       <div className="home-header-logo">
         <a href="/">
           <img src={logo} alt="Online Event Finder" className="header-logo-img" />
         </a>
       </div>
 
-      {/* Search Bar */}
+      {/* Search Bar with Icon */}
       <div className="home-header-search">
         <img
           src={searchIcon}
@@ -66,7 +61,7 @@ function HomeHeader() {
         />
         <input
           type="text"
-          placeholder="Search events, profiles..."
+          placeholder="Search events..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="search-input"
@@ -85,28 +80,31 @@ function HomeHeader() {
 
       {/* Navigation Links */}
       <nav className="home-header-nav">
-        <a href="/">
-          <FaHome />
+        <a href="/" title="Home">
+          <FaHome className="nav-icon" />
         </a>
-        <a href="/about">
-          <FaInfoCircle />
+        <a href="/about" title="About">
+          <FaInfoCircle className="nav-icon" />
+        </a>
+        <a href="/add-event" title="Add Event">
+          <FaCalendarPlus className="nav-icon" />
         </a>
       </nav>
 
       {/* Authentication Links */}
       <div className="home-header-auth">
-        {user ? (
+        {isLoggedIn ? (
           <>
-            <span className="user-info">{user.name}</span>
+            <span className="user-info">{user?.name || user?.email}</span>
             <span onClick={handleLogout} className="auth-link">Logout</span>
           </>
         ) : (
           <>
-            <a href="/login" className="auth-link">
-              <FaSignInAlt />
+            <a href="/login" className="auth-link" title="Login">
+              <FaSignInAlt className="nav-icon" />
             </a>
-            <a href="/signup" className="auth-link">
-              <FaUserPlus />
+            <a href="/signup" className="auth-link" title="Sign Up">
+              <FaUserPlus className="nav-icon" />
             </a>
           </>
         )}
@@ -116,4 +114,3 @@ function HomeHeader() {
 }
 
 export default HomeHeader;
-
