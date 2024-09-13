@@ -1,127 +1,112 @@
-/* Overall header styling */
+/* Header container */
 .home-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #ffffff; /* White background */
-  border-bottom: 1px solid #ddd; /* Light border for header */
-  box-sizing: border-box;
-  position: fixed; /* Fixes the header at the top of the viewport */
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000; /* Ensures the header is above other content */
-  max-width: 1200px; /* Maximum width for the header */
-  margin: 0 auto; /* Center the header horizontally */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+    margin-bottom: 20px; /* Add margin to separate header from the rest of the content */
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* Logo styling */
 .header-logo-img {
-  height: 40px; /* Adjust the size of your logo as needed */
-  cursor: pointer;
+    height: 50px;
+    cursor: pointer;
 }
 
 /* Search Bar styling */
 .home-header-search {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: #f1f1f1;
-  border-radius: 20px;
-  padding: 6px 12px; /* Reduced padding for a slimmer search bar */
-  z-index: 1;
-  width: 300px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f1f1f1;
+    border-radius: 20px;
+    padding: 8px 15px;
+    width: 300px;
 }
 
 .search-icon {
-  width: 18px; /* Adjusted size of the search icon */
-  height: 18px;
-  cursor: pointer; /* Make the icon clickable */
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
 }
 
 .search-input {
-  border: none;
-  background: none;
-  outline: none;
-  font-size: 16px;
-  width: 100%;
-  padding-left: 8px;
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 16px;
+    width: 100%;
 }
 
 .search-input::placeholder {
-  color: #999;
+    color: #999;
 }
 
-/* Navigation styling */
-.home-header-nav {
-  display: flex;
-  gap: 20px; /* Consistent gap between icons and navigation links */
-}
-
-.nav-icon {
-  font-size: 22px; /* Icon size */
-  color: #333;
-  cursor: pointer;
-}
-
-.nav-icon:hover {
-  color: #12CB44; /* Hover effect for icons */
-}
-
-/* Authentication Links (Login, Sign Up) */
-.home-header-auth {
-  display: flex;
-  align-items: center;
-  gap: 15px; /* Consistent gap between authentication links */
-}
-
-.auth-link {
-  cursor: pointer;
-  font-size: 18px;
-  text-decoration: none;
-  color: #333;
-}
-
-.auth-link:hover {
-  color: #12CB44; /* Green hover effect */
-}
-
-/* User info and logout styling */
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Space between the username and logout link */
-}
-
-.username {
-  font-size: 18px;
-  color: #333;
-}
-
-/* Search Dropdown */
+/* Dropdown results */
 .search-dropdown {
-  position: absolute;
-  top: 100%; /* Align the dropdown just below the search bar */
-  left: 0;
-  width: 100%; /* Matches the width of the search bar */
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 1001; /* Ensure the dropdown appears above other elements */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 2px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    z-index: 1000;
 }
 
-/* Dropdown list items */
 .search-dropdown li {
-  padding: 8px;
-  cursor: pointer;
-  list-style: none; /* Removes bullet points from list */
+    padding: 10px;
+    cursor: pointer;
+    list-style: none;
 }
 
 .search-dropdown li:hover {
-  background-color: #f1f1f1;
+    background-color: #f1f1f1;
+}
+
+/* Navigation Links */
+.home-header-nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 24px;
+    margin-left: 20px; /* Space between icons */
+}
+
+.home-header-nav a:hover {
+    color: #12CB44;
+}
+
+/* Authentication Links */
+.home-header-auth {
+    display: flex;
+    align-items: center;
+}
+
+.auth-link {
+    cursor: pointer;
+    font-size: 18px;
+    color: #333;
+    text-decoration: none;
+    margin-left: 20px; /* Space between logout and other items */
+}
+
+.auth-link:hover {
+    color: #12CB44;
+}
+
+/* User info for logged-in state */
+.user-info {
+    margin-right: 20px;
+    font-size: 18px;
+    color: #333;
 }
