@@ -6,6 +6,7 @@
   margin: 50px auto;
   position: relative;
   gap: 20px;
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
 /* Left side for event details */
@@ -16,9 +17,10 @@
   padding: 20px;
   font-family: 'Arial', sans-serif;
   color: #333;
+  position: relative;
 }
 
-/* Event image styling */
+/* Event image styling (full width at the top) */
 .event-image {
   width: 100%;
   height: auto;
@@ -81,11 +83,11 @@
   color: black;
 }
 
-/* Right-hand sticky registration box */
+/* Right-hand floating registration box */
 .event-details-right {
   flex: 1;
-  position: sticky;
-  top: 20px;
+  margin-left: 20px; /* Ensures some space between the box and event details */
+  max-width: 300px;
 }
 
 .admission-box {
@@ -95,6 +97,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-size: 1.2em;
   text-align: left;
+  position: sticky;
+  top: 20px; /* Sticky positioning */
 }
 
 .admission-type {
@@ -140,7 +144,7 @@
   }
 
   .event-details-right {
-    position: relative;
     margin-top: 20px;
+    max-width: 100%;
   }
 }
