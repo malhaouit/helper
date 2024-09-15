@@ -60,63 +60,42 @@ function EventDetails() {
     return <div>No event found.</div>;
   }
 
-  const formatDate = (dateStr: string) => {
-    const eventDate = new Date(dateStr);
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      timeZoneName: 'short',
-    };
-    return eventDate.toLocaleDateString('en-US', options);
-  };
-
   return (
-    <div className="event-details-container">
-      {/* Full-width image at the top */}
-      {event.image && (
-        <img
-          src={`http://localhost:7999/${event.image}`}
-          alt={event.title}
-          className="event-image"
-        />
-      )}
+    <div className="event-details">
+      {/* Full-width image */}
+      {event.image && <img src={`http://localhost:7999/${event.image}`} alt={event.title} className="event-image" />}
 
-      {/* Content below the image */}
+      {/* Left and right content below the image */}
       <div className="event-details-content">
-        {/* Left Side: Event Details */}
+        {/* Left side - Event Details */}
         <div className="event-details-left">
           <h1>{event.title}</h1>
-          <p className="event-description">{event.description}</p>
+          <p>{event.description}</p>
 
           <div className="event-info">
-            <div className="event-info-item">
+            <div>
               <label>Date and time</label>
-              <p className="event-detail-text">{formatDate(event.date)}</p>
+              {new Date(event.date).toLocaleDateString()}, {new Date(event.date).toLocaleTimeString()}
             </div>
-            <div className="event-info-item">
+            <div>
               <label>Location</label>
-              <p className="event-detail-text">
-                {event.location === 'Online' ? 'Online' : event.location}
-              </p>
+              {event.location}
             </div>
           </div>
 
           <div className="capacity">
             <label>Capacity</label>
-            <p className="event-detail-text">{event.capacity} Attendees</p>
+            {event.capacity} Attendees
           </div>
         </div>
 
-        {/* Right Side: Registration Box */}
+        {/* Right side - Registration box */}
         <div className="event-details-right">
           <div className="admission-box">
-            <p className="admission-type">General Admission</p>
-            <p className="price">Free</p>
-            <button className="cta-button">Register for this event</button>
+            <h3>General Admission</h3>
+            <p>Free</p>
           </div>
+          <button className="cta-button">Register for this event</button>
         </div>
       </div>
     </div>
