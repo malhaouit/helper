@@ -1,10 +1,18 @@
-/* Container for the entire event details page */
-.event-details {
-  max-width: 800px;
+/* Main container with left and right sections */
+.event-details-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
   margin: 50px auto;
-  padding: 20px;
+  position: relative;
+}
+
+/* Left side for the image, title, and event info */
+.event-details-left {
+  flex: 1;
   background-color: #f9f9f9;
   border-radius: 10px;
+  padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
   color: #333;
@@ -16,67 +24,83 @@
   height: auto;
   border-radius: 10px;
   margin-bottom: 20px;
+  object-fit: cover;
 }
 
 /* Event title styling */
-.event-details h1 {
-  font-size: 2.5em;
+.event-details-left h1 {
+  font-size: 3em;
   color: #333;
-  margin-bottom: 10px;
-  text-align: center;
+  margin-bottom: 20px;
   border-bottom: 2px solid #12cb44;
   padding-bottom: 10px;
 }
 
-/* Event description paragraph */
-.event-details p {
-  font-size: 1.2em;
-  line-height: 1.6;
+/* Event description */
+.event-details-left p {
+  font-size: 1.5em;
+  line-height: 1.8;
   margin: 15px 0;
 }
 
-/* Date and Location information styling */
-.event-details .event-info {
-  margin-top: 20px;
+/* Event info (date, time, location) */
+.event-info {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
   font-weight: bold;
-  background-color: #eef6ee;
   padding: 15px;
   border-radius: 8px;
+  background-color: #eef6ee;
 }
 
-/* Highlight the Date and Location labels */
-.event-details .event-info label {
+.event-info label {
   color: #12cb44;
-  font-size: 1.1em;
+  font-size: 1.2em;
 }
 
-/* For Event Capacity */
-.event-details .capacity {
+/* Capacity */
+.capacity {
   margin-top: 20px;
   background-color: #e0f7fa;
   padding: 10px 15px;
   border-radius: 8px;
-  text-align: center;
+  text-align: left;
+  font-size: 1.2em;
 }
 
-/* For the button or call to action (if needed) */
-.event-details .cta-button {
-  margin-top: 30px;
-  display: block;
-  width: 100%;
-  padding: 12px;
+/* Call-to-action button below the image */
+.cta-button {
+  width: 200px;
+  padding: 15px;
   background-color: #12cb44;
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 1.2em;
-  text-align: center;
   cursor: pointer;
+  text-align: center;
+  position: sticky;
+  bottom: 20px;
+  right: 20px;
+  align-self: flex-end;
   transition: background-color 0.3s ease;
 }
 
-.event-details .cta-button:hover {
+.cta-button:hover {
   background-color: #0fa233;
+}
+
+/* Responsive design for small screens */
+@media (max-width: 768px) {
+  .event-details-container {
+    padding: 0 10px;
+  }
+
+  .cta-button {
+    width: 100%;
+    position: static;
+    margin-top: 20px;
+  }
 }

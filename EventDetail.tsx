@@ -9,7 +9,7 @@ type Event = {
   date: string;
   location: string;
   capacity?: number;
-  image?: string;  // Add the image field to the Event type
+  image?: string;
 };
 
 function EventDetails() {
@@ -61,27 +61,27 @@ function EventDetails() {
   }
 
   return (
-    <div className="event-details">
-      {/* Display the event image if available */}
-      {event.image && <img src={`http://localhost:7999/${event.image}`} alt={event.title} className="event-image" />}
-      
-      <h1>{event.title}</h1>
-      <p>{event.description}</p>
+    <div className="event-details-container">
+      <div className="event-details-left">
+        {event.image && <img src={`http://localhost:7999/${event.image}`} alt={event.title} className="event-image" />}
+        <h1>{event.title}</h1>
+        <p>{event.description}</p>
 
-      <div className="event-info">
-        <div>
-          <label>Date:</label> {new Date(event.date).toLocaleDateString()}
+        <div className="event-info">
+          <div>
+            <label>Date:</label> {new Date(event.date).toLocaleDateString()}
+          </div>
+          <div>
+            <label>Time:</label> {new Date(event.date).toLocaleTimeString()}
+          </div>
+          <div>
+            <label>Location:</label> {event.location}
+          </div>
         </div>
-        <div>
-          <label>Time:</label> {new Date(event.date).toLocaleTimeString()}
-        </div>
-        <div>
-          <label>Location:</label> {event.location}
-        </div>
-      </div>
 
-      <div className="capacity">
-        <label>Capacity:</label> {event.capacity}
+        <div className="capacity">
+          <label>Capacity:</label> {event.capacity}
+        </div>
       </div>
 
       <button className="cta-button">Register for this event</button>
