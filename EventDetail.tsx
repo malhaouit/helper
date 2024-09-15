@@ -75,46 +75,48 @@ function EventDetails() {
 
   return (
     <div className="event-details-container">
-      {/* Left Side: Event Image and Details */}
-      <div className="event-details-left">
-        {event.image && (
-          <img
-            src={`http://localhost:7999/${event.image}`}
-            alt={event.title}
-            className="event-image"
-          />
-        )}
+      {/* Full-width image at the top */}
+      {event.image && (
+        <img
+          src={`http://localhost:7999/${event.image}`}
+          alt={event.title}
+          className="event-image"
+        />
+      )}
 
-        <h1>{event.title}</h1>
-        <p className="event-description">{event.description}</p>
+      {/* Content below the image */}
+      <div className="event-details-content">
+        {/* Left Side: Event Details */}
+        <div className="event-details-left">
+          <h1>{event.title}</h1>
+          <p className="event-description">{event.description}</p>
 
-        <div className="event-info">
-          <div className="event-info-item">
-            <label>Date and time</label>
-            <p className="event-detail-text">{formatDate(event.date)}</p>
+          <div className="event-info">
+            <div className="event-info-item">
+              <label>Date and time</label>
+              <p className="event-detail-text">{formatDate(event.date)}</p>
+            </div>
+            <div className="event-info-item">
+              <label>Location</label>
+              <p className="event-detail-text">
+                {event.location === 'Online' ? 'Online' : event.location}
+              </p>
+            </div>
           </div>
-          <div className="event-info-item">
-            <label>Location</label>
-            <p className="event-detail-text">
-              {event.location === 'Online' ? 'Online' : event.location}
-            </p>
+
+          <div className="capacity">
+            <label>Capacity</label>
+            <p className="event-detail-text">{event.capacity} Attendees</p>
           </div>
         </div>
 
-        <div className="capacity">
-          <label>Capacity</label>
-          <p className="event-detail-text">{event.capacity} Attendees</p>
-        </div>
-      </div>
-
-      {/* Right Side: Floating Registration Box */}
-      <div className="event-details-right">
-        <div className="admission-box">
-          <p className="admission-type">General Admission</p>
-          <div className="price-box">
+        {/* Right Side: Registration Box */}
+        <div className="event-details-right">
+          <div className="admission-box">
+            <p className="admission-type">General Admission</p>
             <p className="price">Free</p>
+            <button className="cta-button">Register for this event</button>
           </div>
-          <button className="cta-button">Register for this event</button>
         </div>
       </div>
     </div>
