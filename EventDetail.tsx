@@ -60,6 +60,19 @@ function EventDetails() {
     return <div>No event found.</div>;
   }
 
+  const formatDate = (dateStr: string) => {
+    const eventDate = new Date(dateStr);
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      timeZoneName: 'short',
+    };
+    return eventDate.toLocaleDateString('en-US', options);
+  };
+
   return (
     <div className="event-details-container">
       <div className="event-details-left">
@@ -69,22 +82,26 @@ function EventDetails() {
 
         <div className="event-info">
           <div>
-            <label>Date:</label> {new Date(event.date).toLocaleDateString()}
+            <label>Date and time</label>
+            <p className="event-detail-text">{formatDate(event.date)}</p>
           </div>
           <div>
-            <label>Time:</label> {new Date(event.date).toLocaleTimeString()}
-          </div>
-          <div>
-            <label>Location:</label> {event.location}
+            <label>Location</label>
+            <p className="event-detail-text">{event.location === 'Online' ? 'Online' : event.location}</p>
           </div>
         </div>
 
         <div className="capacity">
-          <label>Capacity:</label> {event.capacity}
+          <label>Capacity</label>
+          <p className="event-detail-text">{event.capacity} Attendees</p>
         </div>
       </div>
 
-      <button className="cta-button">Register for this event</button>
+      {/* Admission Box with Registration Button */}
+      <div className="admission-box">
+        <p className="admission-type">General admission</p>
+        <button className="cta-button">Register for this event</button>
+      </div>
     </div>
   );
 }
