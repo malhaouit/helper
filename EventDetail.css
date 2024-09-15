@@ -1,19 +1,19 @@
 /* Main container with left and right sections */
 .event-details-container {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   max-width: 1200px;
   margin: 50px auto;
   position: relative;
+  gap: 20px;
 }
 
-/* Left side for the image, title, and event info */
+/* Left side for event details */
 .event-details-left {
-  flex: 1;
+  flex: 2;
   background-color: #f9f9f9;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
   color: #333;
 }
@@ -29,7 +29,7 @@
 
 /* Event title styling */
 .event-details-left h1 {
-  font-size: 3em;
+  font-size: 2.8em;
   color: #333;
   margin-bottom: 20px;
   border-bottom: 2px solid #12cb44;
@@ -37,18 +37,22 @@
 }
 
 /* Event description */
-.event-details-left p {
-  font-size: 1.5em;
+.event-description {
+  font-size: 1.2em;
   line-height: 1.8;
-  margin: 15px 0;
+  margin: 20px 0;
 }
 
-/* Date, Time, Location, and Capacity styling */
-.event-info, .capacity {
+/* Date and Location styling */
+.event-info {
   margin-top: 30px;
 }
 
-.event-info label, .capacity label {
+.event-info-item {
+  margin-bottom: 20px;
+}
+
+.event-info label {
   font-size: 1.3em;
   font-weight: bold;
   color: black;
@@ -58,35 +62,55 @@
 .event-detail-text {
   font-size: 1.2em;
   color: black;
-  font-weight: normal;
   margin-top: 5px;
-  margin-bottom: 15px;
 }
 
 /* Capacity styling */
 .capacity {
-  margin-top: 20px;
-  background-color: #e0f7fa;
-  padding: 10px 15px;
-  border-radius: 8px;
+  margin-top: 30px;
 }
 
-/* Admission Box styling */
+.capacity label {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: black;
+}
+
+.capacity .event-detail-text {
+  font-size: 1.2em;
+  color: black;
+}
+
+/* Right-hand sticky registration box */
+.event-details-right {
+  flex: 1;
+  position: sticky;
+  top: 20px;
+}
+
 .admission-box {
-  margin-top: 30px;
   background-color: #f4f4f4;
   padding: 20px;
-  border-radius: 8px;
-  text-align: left;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-size: 1.2em;
-  position: relative;
-  width: 100%;
+  text-align: left;
 }
 
 .admission-type {
   font-size: 1.5em;
   font-weight: bold;
   margin-bottom: 15px;
+}
+
+.price-box {
+  margin-bottom: 20px;
+}
+
+.price {
+  font-size: 2em;
+  font-weight: bold;
+  color: #12cb44;
 }
 
 /* Register button */
@@ -108,9 +132,15 @@
   background-color: #0fa233;
 }
 
-/* Responsive design for small screens */
+/* Responsive design */
 @media (max-width: 768px) {
   .event-details-container {
-    padding: 0 10px;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .event-details-right {
+    position: relative;
+    margin-top: 20px;
   }
 }

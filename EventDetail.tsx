@@ -76,16 +76,24 @@ function EventDetails() {
   return (
     <div className="event-details-container">
       <div className="event-details-left">
-        {event.image && <img src={`http://localhost:7999/${event.image}`} alt={event.title} className="event-image" />}
+        {/* Display the event image if available */}
+        {event.image && (
+          <img
+            src={`http://localhost:7999/${event.image}`}
+            alt={event.title}
+            className="event-image"
+          />
+        )}
+
         <h1>{event.title}</h1>
-        <p>{event.description}</p>
+        <p className="event-description">{event.description}</p>
 
         <div className="event-info">
-          <div>
+          <div className="event-info-item">
             <label>Date and time</label>
             <p className="event-detail-text">{formatDate(event.date)}</p>
           </div>
-          <div>
+          <div className="event-info-item">
             <label>Location</label>
             <p className="event-detail-text">{event.location === 'Online' ? 'Online' : event.location}</p>
           </div>
@@ -97,10 +105,15 @@ function EventDetails() {
         </div>
       </div>
 
-      {/* Admission Box with Registration Button */}
-      <div className="admission-box">
-        <p className="admission-type">General admission</p>
-        <button className="cta-button">Register for this event</button>
+      {/* Right-hand sticky registration box */}
+      <div className="event-details-right">
+        <div className="admission-box">
+          <p className="admission-type">General Admission</p>
+          <div className="price-box">
+            <p className="price">Free</p>
+          </div>
+          <button className="cta-button">Register for this event</button>
+        </div>
       </div>
     </div>
   );
