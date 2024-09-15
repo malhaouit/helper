@@ -1,150 +1,124 @@
-/* Main container with left and right sections */
-.event-details-container {
-  display: flex;
-  justify-content: space-between;
-  max-width: 1200px;
-  margin: 50px auto;
-  position: relative;
-  gap: 20px;
-  flex-wrap: wrap; /* Allow wrapping for smaller screens */
-}
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import '../styles/EventDetails.css';
 
-/* Left side for event details */
-.event-details-left {
-  flex: 2;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  padding: 20px;
-  font-family: 'Arial', sans-serif;
-  color: #333;
-  position: relative;
-}
+type Event = {
+  _id: string;
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+  capacity?: number;
+  image?: string;
+};
 
-/* Event image styling (full width at the top) */
-.event-image {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  object-fit: cover;
-}
+function EventDetails() {
+  const { eventId } = useParams<{ eventId: string }>();
+  const [event, setEvent] = useState<Event | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-/* Event title styling */
-.event-details-left h1 {
-  font-size: 2.8em;
-  color: #333;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #12cb44;
-  padding-bottom: 10px;
-}
+  useEffect(() => {
+    const fetchEventDetails = async () => {
+      try {
+        if (!eventId) {
+          setError('No event ID provided');
+          setLoading(false);
+          return;
+        }
 
-/* Event description */
-.event-description {
-  font-size: 1.2em;
-  line-height: 1.8;
-  margin: 20px 0;
-}
+        const response = await fetch(`http://localhost:7999/api/event/${eventId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch event details');
+        }
 
-/* Date and Location styling */
-.event-info {
-  margin-top: 30px;
-}
+        const data = await response.json();
+        setEvent(data);
+        setLoading(false);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
+        setLoading(false);
+      }
+    };
 
-.event-info-item {
-  margin-bottom: 20px;
-}
+    fetchEventDetails();
+  }, [eventId]);
 
-.event-info label {
-  font-size: 1.3em;
-  font-weight: bold;
-  color: black;
-  margin-bottom: 10px;
-}
-
-.event-detail-text {
-  font-size: 1.2em;
-  color: black;
-  margin-top: 5px;
-}
-
-/* Capacity styling */
-.capacity {
-  margin-top: 30px;
-}
-
-.capacity label {
-  font-size: 1.3em;
-  font-weight: bold;
-  color: black;
-}
-
-.capacity .event-detail-text {
-  font-size: 1.2em;
-  color: black;
-}
-
-/* Right-hand floating registration box */
-.event-details-right {
-  flex: 1;
-  margin-left: 20px; /* Ensures some space between the box and event details */
-  max-width: 300px;
-}
-
-.admission-box {
-  background-color: #f4f4f4;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-size: 1.2em;
-  text-align: left;
-  position: sticky;
-  top: 20px; /* Sticky positioning */
-}
-
-.admission-type {
-  font-size: 1.5em;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-.price-box {
-  margin-bottom: 20px;
-}
-
-.price {
-  font-size: 2em;
-  font-weight: bold;
-  color: #12cb44;
-}
-
-/* Register button */
-.cta-button {
-  width: 100%;
-  padding: 15px;
-  background-color: #12cb44;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.2em;
-  cursor: pointer;
-  text-align: center;
-  margin-top: 20px;
-  transition: background-color 0.3s ease;
-}
-
-.cta-button:hover {
-  background-color: #0fa233;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .event-details-container {
-    flex-direction: column;
-    gap: 0;
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  .event-details-right {
-    margin-top: 20px;
-    max-width: 100%;
+  if (error) {
+    return <div className="error-message">{error}</div>;
   }
+
+  if (!event) {
+    return <div>No event found.</div>;
+  }
+
+  const formatDate = (dateStr: string) => {
+    const eventDate = new Date(dateStr);
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      timeZoneName: 'short',
+    };
+    return eventDate.toLocaleDateString('en-US', options);
+  };
+
+  return (
+    <div className="event-details-container">
+      {/* Left Side: Event Image and Details */}
+      <div className="event-details-left">
+        {event.image && (
+          <img
+            src={`http://localhost:7999/${event.image}`}
+            alt={event.title}
+            className="event-image"
+          />
+        )}
+
+        <h1>{event.title}</h1>
+        <p className="event-description">{event.description}</p>
+
+        <div className="event-info">
+          <div className="event-info-item">
+            <label>Date and time</label>
+            <p className="event-detail-text">{formatDate(event.date)}</p>
+          </div>
+          <div className="event-info-item">
+            <label>Location</label>
+            <p className="event-detail-text">
+              {event.location === 'Online' ? 'Online' : event.location}
+            </p>
+          </div>
+        </div>
+
+        <div className="capacity">
+          <label>Capacity</label>
+          <p className="event-detail-text">{event.capacity} Attendees</p>
+        </div>
+      </div>
+
+      {/* Right Side: Floating Registration Box */}
+      <div className="event-details-right">
+        <div className="admission-box">
+          <p className="admission-type">General Admission</p>
+          <div className="price-box">
+            <p className="price">Free</p>
+          </div>
+          <button className="cta-button">Register for this event</button>
+        </div>
+      </div>
+    </div>
+  );
 }
+
+export default EventDetails;
